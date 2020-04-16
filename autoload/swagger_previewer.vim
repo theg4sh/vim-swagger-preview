@@ -1,8 +1,7 @@
-
 function! swagger_previewer#Generate(pluginPath)
   let tmpDir = "/tmp/vim-swagger-preview/"
   call system("mkdir " . tmpDir)
-  if exists( "g:swagger_preview_verbose_log" ) 
+  if exists( "g:swagger_preview_verbose_log" )
     execute "!" . "swagger_preview " . bufname("%")
   else
     if has('nvim')
@@ -22,7 +21,13 @@ function! swagger_previewer#Generate(pluginPath)
     if has('mac')
       call system("osascript " . a:pluginPath . '/applescript/active.scpt')
     else
-      call system("xdg-open " . "http://localhost:8017")
+      if !exists('g:swagger_preview_host')
+        let g:swagger_preview_host = "http://localhost"
+      endif
+      if !exists('g:swagger_preview_port')
+        let g:swagger_preview_port = 8017
+      endif
+      call system("xdg-open " . g:swagger_preview_host . ":" . string(g:swagger_preview_port))
     endif
   endif
-endfunctio
+endfunction
